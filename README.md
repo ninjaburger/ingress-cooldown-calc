@@ -1,42 +1,124 @@
-# sv
+# Ingress Cooldown Calculator
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+An interactive SvelteKit web app for calculating portal hacking stats in Ingress based on mod configurations and portal alignment.
 
-## Creating a project
+It helps agents quickly estimate:
 
-If you're seeing this, you've probably already done this step. Congrats!
+-   **Total hacks** before portal burnout.
+-   **Cooldown time** between hacks.
+-   **Time to burnout** from first hack to last hack.
 
-```sh
-# create a new project
-npx sv create my-app
+Select your **Heat Sink** and **Multi‑hack** mods to instantly see the resulting cooldown and burnout stats.
+
+## Demo
+
+https://ingress-cooldown-calc.pages.dev/
+
+## How the calculations work
+
+### Total hacks
+
+A portal allows **4 hacks by default**. Multi‑hack mods increase this limit.
+
+|Mod                   |Extra hacks
+|----------------------|-------------
+|Common Multi‑hack     |+4
+|Rare Multi‑hack       |+8
+|Very Rare Multi‑hack  |+12
+
+If multiple Multi‑hacks are installed:
+
+- The **highest rarity mod uses 100% of its value**
+- The **others use 50% of their value**
+
+Example:
+
+```
+VRMH + RMH
+
+4 base
++12
++4 (8 × 50%)
+
+= 20 hacks
 ```
 
-To recreate this project with the same configuration:
 
-```sh
-# recreate this project
-pnpm dlx sv create --template minimal --types ts --add tailwindcss="plugins:none" --install pnpm ingress-cooldown-calc
+### Cooldown time
+
+Base cooldown depends on portal alignment.
+
+| Portal           | Base cooldown
+|------------------|---------------
+| Friendly         | 180s
+| Neutral / Enemy  | 300s
+
+Heat Sink mods reduce cooldown.
+
+| Mod                  | Reduction
+|----------------------|-----------
+| Common Heat Sink     | 20%
+| Rare Heat Sink       | 50%
+| Very Rare Heat Sink  | 70%
+
+When multiple Heat Sinks are installed:
+
+- The **highest rarity applies 100%**
+- The **others apply 50%**
+
+Example:
+
+```
+VRHS + RHS + CHS
+Friendly portal (180s)
+
+180 × (1 − 0.7) × (1 − (0.5 / 2)) × (1 − (0.2 / 2)) = 36.45
+
+≈ 36s cooldown
 ```
 
-## Developing
+### Time to burnout
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Represents the total time from the **first hack** until the portal burns
+out.
 
-```sh
-npm run dev
+`timeToBurnout = (totalHacks − 1) × cooldown`
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Example:
+
+```
+x1 VRMH + x2 VRHS
+
+16 hacks
+35s cooldown
+
+(16 − 1) × 35 = 525s = 8:45
 ```
 
-## Building
+## Running locally
 
-To create a production version of your app:
+Clone the repository:
 
-```sh
-npm run build
+``` bash
+git clone https://github.com/ninjaburger/ingress-cooldown-calculator.git
+cd ingress-cooldown-calculator
 ```
 
-You can preview the production build with `npm run preview`.
+Install dependencies:
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+``` bash
+pnpm install
+```
+
+Set environment variables:
+
+`PUBLIC_BASE_URL=https://your-domain.com`
+
+*This variable is used for canonical URLs and Open Graph metadata.*
+
+Start the dev server:
+
+``` bash
+pnpm run dev
+```
+

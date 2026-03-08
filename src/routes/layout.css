@@ -1,1 +1,85 @@
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Exo:ital,wght@0,300..900;1,300..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(220 40% 6%);
+  --color-foreground: hsl(180 100% 90%);
+  --font-sans: "Exo", sans-serif;
+  --color-grid-line: rgba(14, 25, 40, 0.8);
+}
+@layer base {
+  body {
+    @apply bg-background text-foreground antialiased;
+
+    background-image:
+      linear-gradient(var(--color-grid-line), transparent 1px),
+      linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-position: center center;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply uppercase;
+  }
+}
+
+@layer components {
+  button {
+    @apply cursor-pointer uppercase;
+
+    &.alignment-btn {
+      @apply flex items-center justify-center gap-2 rounded-lg py-2 text-xs font-bold text-slate-500 transition-all hover:text-slate-400;
+
+      &[data-active="true"][data-variant="green"] {
+        @apply border border-green-500/30 bg-green-500/20 text-green-400 shadow-[0_0_15px_rgba(34,197,94,0.1)];
+      }
+
+      &[data-active="true"][data-variant="red"] {
+        @apply border border-red-500/30 bg-red-500/20 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.1)];
+      }
+    }
+  }
+
+  .mod-slot {
+    @apply relative flex aspect-square w-full flex-col items-center justify-center overflow-hidden rounded-xl border-2 bg-black/40 backdrop-blur-sm transition-all duration-300;
+
+    &[data-type="NONE"] {
+      @apply border-slate-700/80 hover:border-cyan-700/50 hover:bg-black/60;
+    }
+
+    &[data-rarity="COMMON"] {
+      @apply border-green-400 shadow-[0_0_15px_rgba(74,222,128,0.15)];
+    }
+    &[data-rarity="RARE"] {
+      @apply border-purple-400 shadow-[0_0_15px_rgba(192,132,252,0.15)];
+    }
+    &[data-rarity="VERY_RARE"] {
+      @apply border-pink-400 shadow-[0_0_15px_rgba(244,114,182,0.15)];
+    }
+    &[data-open="true"] {
+      @apply z-10 shadow-[0_0_20px_rgba(250,204,21,0.5)] ring-2 ring-yellow-400;
+    }
+  }
+
+  .rarity-picker {
+    @apply grid grid-cols-3 gap-2;
+
+    .rarity-option {
+      @apply rounded-lg border py-2.5 text-sm font-bold transition-all;
+
+      &.COMMON {
+        @apply border-green-400/50 text-green-400 hover:bg-green-400/20;
+      }
+      &.RARE {
+        @apply border-purple-400/50 text-purple-400 hover:bg-purple-400/20;
+      }
+      &.VERY_RARE {
+        @apply border-pink-400/50 text-pink-400 hover:bg-pink-400/20;
+      }
+    }
+  }
+}
