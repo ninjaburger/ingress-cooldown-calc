@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Mod, ModRarity } from "$lib";
+  import type { Mod, ModRarity } from "#lib";
 
   const { mod }: { mod: Mod } = $props();
 

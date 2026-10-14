@@ -7,8 +7,8 @@
     formatDuration,
     type Mod,
     type PortalAlignment,
-  } from "$lib";
-  import ModSlot from "$lib/components/ModSlot.svelte";
+  } from "#lib";
+  import ModSlot from "#lib/components/ModSlot.svelte";
   import { RotateCcw, Shield, ShieldAlert } from "@lucide/svelte";
 
   const EMPTY_MOD: Mod = { type: "NONE" } as const;

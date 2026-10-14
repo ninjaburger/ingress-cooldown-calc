@@ -1,10 +1,10 @@
 <script lang="ts">
-  import heatsinkImg from "$lib/assets/heat_sink.svg";
-  import multihackImg from "$lib/assets/multi_hack.svg";
+  import heatsinkImg from "#lib/assets/heat_sink.svg";
+  import multihackImg from "#lib/assets/multi_hack.svg";
 
-  import type { ActiveMod, Mod, ModRarity } from "$lib";
+  import type { ActiveMod, Mod, ModRarity } from "#lib";
   import { Popover } from "bits-ui";
-  import RarityIndicator from "$lib/components/RarityIndicator.svelte";
+  import RarityIndicator from "#lib/components/RarityIndicator.svelte";
 
   const {
     mod,

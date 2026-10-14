@@ -5,7 +5,7 @@ import {
   calculatePortalStats,
   type Mod,
   type PortalAlignment,
-} from "$lib";
+} from "#lib";
 
 describe("Multi-hack scenarios", () => {
   const scenarios = [

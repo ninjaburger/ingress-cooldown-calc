@@ -1,6 +1,6 @@
 <script lang="ts">
   import "./layout.css";
-  import { PUBLIC_BASE_URL } from "$env/static/public";
+  import { PUBLIC_BASE_URL } from '$app/env/public';
 
   let { children } = $props();
 
